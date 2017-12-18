@@ -91,7 +91,7 @@ var fetcher = &fakeFetcher{
 			"Packages",
 			[]string{
 				"http://golang.org/",
-				"ç/",
+				"http://golang.org/cmd/",
 				"http://golang.org/pkg/fmt/",
 				"http://golang.org/pkg/os/",
 			},
