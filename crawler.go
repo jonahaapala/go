@@ -22,9 +22,10 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 	if depth <= 0 {
 		return
 	}
+	
 	body, urls, err := fetcher.Fetch(url)
 	if err != nil {
-		//fmt.Println(err)
+		fmt.Println(err)
 		return
 	}
 	fmt.Printf("found: %s %q\n", url, body)
@@ -46,15 +47,15 @@ type Cache struct {
 	mux     sync.Mutex
 }
 
+type fakeResult struct {
+	body string
+	urls []string
+}
+
 // fakeFetcher is Fetcher that returns canned results.
 type fakeFetcher struct {
 	urls  map[string]*fakeResult
 	cache Cache
-}
-
-type fakeResult struct {
-	body string
-	urls []string
 }
 
 func (f *fakeFetcher) Fetch(url string) (string, []string, error) {
@@ -73,7 +74,7 @@ func (f *fakeFetcher) Fetch(url string) (string, []string, error) {
 	return "", nil, fmt.Errorf("not found: %s", url)
 }
 
-// a channel to count how many Crawl routines are still running
+// a channel to alter the count of how many Crawl routines are still running
 var count = make(chan int)
 
 // fetcher is a populated fakeFetcher.
